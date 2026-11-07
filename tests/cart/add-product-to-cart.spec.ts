@@ -1,10 +1,11 @@
-import { test, expect } from "@playwright/test";
-import { InventoryPage } from "../../pages/InventoryPage";
+import { test, expect } from "../../fixtures/page-fixtures";
 
-test("TC-CART-001 - Add product to cart", async ({ page }) => {
-  const inventoryPage = new InventoryPage(page);
-
+test("TC-CART-001 - Verify product can be added to cart", async ({
+  inventoryPage,
+  page,
+}) => {
   await inventoryPage.open();
+
   await inventoryPage.addProductToCart("sauce-labs-backpack");
 
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText(

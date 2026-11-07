@@ -1,13 +1,14 @@
-import { test, expect } from "@playwright/test";
-import { InventoryPage } from "../../pages/InventoryPage";
-import { CartPage } from "../../pages/CartPage";
+import { test, expect } from "../../fixtures/page-fixtures";
 
-test("TC-CART-005 - Remove product from shopping cart", async ({ page }) => {
-  const inventoryPage = new InventoryPage(page);
-  const cartPage = new CartPage(page);
-
+test("TC-CART-005 - Verify product can be removed from shopping cart", async ({
+  inventoryPage,
+  cartPage,
+  page,
+}) => {
   await inventoryPage.open();
+
   await inventoryPage.addProductToCart("sauce-labs-backpack");
+
   await inventoryPage.openCart();
 
   await cartPage.removeProduct("sauce-labs-backpack");

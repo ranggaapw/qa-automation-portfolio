@@ -1,18 +1,15 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
-test("TC-CART-004 - Verify product quantity in shopping cart", async ({
+test("TC-CART-004 - Verify product quantity in cart", async ({
+  inventoryPage,
   page,
 }) => {
-  // Open product page
-  await page.goto("/inventory.html");
+  await inventoryPage.open();
 
-  // Add product to cart
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+  await inventoryPage.addProductToCart("sauce-labs-backpack");
 
-  // Open shopping cart
-  await page.locator('[data-test="shopping-cart-link"]').click();
+  await inventoryPage.openCart();
 
-  // Verify product quantity
   await expect(
     page.locator('[data-test="cart-list"] [data-test="item-quantity"]'),
   ).toHaveText("1");

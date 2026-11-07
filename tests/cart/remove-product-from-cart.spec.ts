@@ -1,15 +1,14 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
-test("TC-CART-002 - Verify remove product from cart", async ({ page }) => {
-  // Open product page
-  await page.goto("/inventory.html");
+test("TC-CART-002 - Verify product can be removed from inventory", async ({
+  inventoryPage,
+  page,
+}) => {
+  await inventoryPage.open();
 
-  // Add product to cart
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+  await inventoryPage.addProductToCart("sauce-labs-backpack");
 
-  // Remove product from cart
-  await page.locator('[data-test="remove-sauce-labs-backpack"]').click();
+  await inventoryPage.removeProduct("sauce-labs-backpack");
 
-  // Verify shopping cart badge is no longer visible
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toBeHidden();
 });

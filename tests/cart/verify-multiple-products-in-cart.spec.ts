@@ -1,6 +1,4 @@
-import { test, expect } from "@playwright/test";
-import { InventoryPage } from "../../pages/InventoryPage";
-import { CartPage } from "../../pages/CartPage";
+import { test, expect } from "../../fixtures/page-fixtures";
 import { products } from "../../test-data/products";
 
 const productList = [
@@ -11,12 +9,14 @@ const productList = [
 ];
 
 for (const product of productList) {
-  test(`Verify ${product} can be added to cart`, async ({ page }) => {
-    const inventoryPage = new InventoryPage(page);
-    const cartPage = new CartPage(page);
-
+  test(`Verify ${product} can be added to cart`, async ({
+    inventoryPage,
+    page,
+  }) => {
     await inventoryPage.open();
+
     await inventoryPage.addProductToCart(product);
+
     await inventoryPage.openCart();
 
     await expect(

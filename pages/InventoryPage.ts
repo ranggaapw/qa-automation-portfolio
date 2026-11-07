@@ -14,4 +14,8 @@ export class InventoryPage {
   async openCart() {
     await this.page.locator('[data-test="shopping-cart-link"]').click();
   }
+
+  async removeProduct(product: string) {
+    await this.page.locator(`[data-test="remove-${product}"]`).click();
+  }
 }

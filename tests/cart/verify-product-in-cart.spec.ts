@@ -1,15 +1,13 @@
-import { test, expect } from "@playwright/test";
-import { InventoryPage } from "../../pages/InventoryPage";
-import { CartPage } from "../../pages/CartPage";
+import { test, expect } from "../../fixtures/page-fixtures";
 
-test("TC-CART-003 - Verify product display in shopping cart", async ({
-  page,
+test("TC-CART-003 - Verify product is displayed in cart", async ({
+  inventoryPage,
+  cartPage,
 }) => {
-  const inventoryPage = new InventoryPage(page);
-  const cartPage = new CartPage(page);
-
   await inventoryPage.open();
-  await inventoryPage.addBackpackToCart();
+
+  await inventoryPage.addProductToCart("sauce-labs-backpack");
+
   await inventoryPage.openCart();
 
   await expect(cartPage.getProductName()).toHaveText("Sauce Labs Backpack");

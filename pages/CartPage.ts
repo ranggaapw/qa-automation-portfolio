@@ -12,4 +12,8 @@ export class CartPage {
   async removeProduct(product: string) {
     await this.page.locator(`[data-test="remove-${product}"]`).click();
   }
+
+  async proceedToCheckout() {
+    await this.page.locator('[data-test="checkout"]').click();
+  }
 }

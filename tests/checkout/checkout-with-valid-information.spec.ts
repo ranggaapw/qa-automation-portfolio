@@ -1,31 +1,30 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
 test("TC-CHECKOUT-002 - Verify checkout with valid information", async ({
+  inventoryPage,
+  cartPage,
+  checkoutPage,
   page,
 }) => {
-  // Open product page
-  await page.goto("/inventory.html");
+  // Open inventory page
+  await inventoryPage.open();
 
   // Add product to cart
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+  await inventoryPage.addProductToCart("sauce-labs-backpack");
 
   // Open shopping cart
-  await page.locator('[data-test="shopping-cart-link"]').click();
+  await inventoryPage.openCart();
 
-  // Click checkout button
-  await page.locator('[data-test="checkout"]').click();
+  // Proceed to checkout
+  await cartPage.proceedToCheckout();
 
   // Fill customer information
-  await page.locator('[data-test="firstName"]').fill("Rangga");
-  await page.locator('[data-test="lastName"]').fill("Wijaya");
-  await page.locator('[data-test="postalCode"]').fill("16123");
+  await checkoutPage.fillCustomerInformation("Rangga", "Wijaya", "16123");
 
   // Continue checkout
-  await page.locator('[data-test="continue"]').click();
+  await checkoutPage.continueCheckout();
 
   // Verify checkout overview page
   await expect(page).toHaveURL(/checkout-step-two\.html/);
-  await expect(page.locator('[data-test="title"]')).toHaveText(
-    "Checkout: Overview",
-  );
+  await expect(checkoutPage.getPageTitle()).toHaveText("Checkout: Overview");
 });

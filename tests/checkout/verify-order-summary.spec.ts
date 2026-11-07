@@ -1,41 +1,37 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
-test("TC-CHECKOUT-006 - Verify order summary", async ({ page }) => {
-  // Open product page
-  await page.goto("/inventory.html");
+test("TC-CHECKOUT-006 - Verify order summary", async ({
+  inventoryPage,
+  cartPage,
+  checkoutPage,
+}) => {
+  // Open inventory page
+  await inventoryPage.open();
 
   // Add product to cart
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+  await inventoryPage.addProductToCart("sauce-labs-backpack");
 
   // Open shopping cart
-  await page.locator('[data-test="shopping-cart-link"]').click();
+  await inventoryPage.openCart();
 
   // Proceed to checkout
-  await page.locator('[data-test="checkout"]').click();
+  await cartPage.proceedToCheckout();
 
   // Fill customer information
-  await page.locator('[data-test="firstName"]').fill("Rangga");
-  await page.locator('[data-test="lastName"]').fill("Wijaya");
-  await page.locator('[data-test="postalCode"]').fill("16123");
+  await checkoutPage.fillCustomerInformation("Rangga", "Wijaya", "16123");
 
   // Continue to checkout overview
-  await page.locator('[data-test="continue"]').click();
+  await checkoutPage.continueCheckout();
 
   // Verify product name
-  await expect(
-    page.locator('[data-test="cart-list"] [data-test="inventory-item-name"]'),
-  ).toHaveText("Sauce Labs Backpack");
+  await expect(checkoutPage.getOverviewProductName()).toHaveText(
+    "Sauce Labs Backpack",
+  );
 
   // Verify order summary
-  await expect(page.locator('[data-test="subtotal-label"]')).toHaveText(
-    "Item total: $29.99",
-  );
+  await expect(checkoutPage.getSubtotal()).toHaveText("Item total: $29.99");
 
-  await expect(page.locator('[data-test="tax-label"]')).toHaveText(
-    "Tax: $2.40",
-  );
+  await expect(checkoutPage.getTax()).toHaveText("Tax: $2.40");
 
-  await expect(page.locator('[data-test="total-label"]')).toHaveText(
-    "Total: $32.39",
-  );
+  await expect(checkoutPage.getTotal()).toHaveText("Total: $32.39");
 });

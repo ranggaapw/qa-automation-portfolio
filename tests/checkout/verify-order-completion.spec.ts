@@ -1,40 +1,39 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
 test("TC-CHECKOUT-007 - Verify successful order completion", async ({
+  inventoryPage,
+  cartPage,
+  checkoutPage,
   page,
 }) => {
-  // Open product page
-  await page.goto("/inventory.html");
+  // Open inventory page
+  await inventoryPage.open();
 
   // Add product to cart
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+  await inventoryPage.addProductToCart("sauce-labs-backpack");
 
   // Open shopping cart
-  await page.locator('[data-test="shopping-cart-link"]').click();
+  await inventoryPage.openCart();
 
   // Proceed to checkout
-  await page.locator('[data-test="checkout"]').click();
+  await cartPage.proceedToCheckout();
 
   // Fill customer information
-  await page.locator('[data-test="firstName"]').fill("Rangga");
-  await page.locator('[data-test="lastName"]').fill("Wijaya");
-  await page.locator('[data-test="postalCode"]').fill("16123");
+  await checkoutPage.fillCustomerInformation("Rangga", "Wijaya", "16123");
 
   // Continue to checkout overview
-  await page.locator('[data-test="continue"]').click();
+  await checkoutPage.continueCheckout();
 
   // Finish the order
-  await page.locator('[data-test="finish"]').click();
+  await checkoutPage.finishCheckout();
 
   // Verify order completion page
   await expect(page).toHaveURL(/checkout-complete\.html/);
 
-  await expect(page.locator('[data-test="title"]')).toHaveText(
-    "Checkout: Complete!",
-  );
+  await expect(checkoutPage.getPageTitle()).toHaveText("Checkout: Complete!");
 
   // Verify success message
-  await expect(page.locator('[data-test="complete-header"]')).toHaveText(
+  await expect(checkoutPage.getCompletionMessage()).toHaveText(
     "Thank you for your order!",
   );
 });

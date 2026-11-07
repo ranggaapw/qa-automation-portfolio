@@ -1,28 +1,29 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
-test("TC-CHECKOUT-001 - Verify checkout information page", async ({ page }) => {
-  // Open product page
-  await page.goto("/inventory.html");
+test("TC-CHECKOUT-001 - Verify checkout information page", async ({
+  inventoryPage,
+  cartPage,
+  checkoutPage,
+}) => {
+  // Open inventory page
+  await inventoryPage.open();
 
   // Add product to cart
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+  await inventoryPage.addProductToCart("sauce-labs-backpack");
 
-  // Open shopping cart
-  await page.locator('[data-test="shopping-cart-link"]').click();
+  // Open cart
+  await inventoryPage.openCart();
 
-  // Click checkout button
-  await page.locator('[data-test="checkout"]').click();
+  // Proceed to checkout
+  await cartPage.proceedToCheckout();
 
   // Verify checkout information page
-  await expect(page).toHaveURL(/checkout-step-one\.html/);
-
-  // Verify page title
-  await expect(page.locator('[data-test="title"]')).toHaveText(
+  await expect(checkoutPage.getPageTitle()).toHaveText(
     "Checkout: Your Information",
   );
 
   // Verify customer information fields
-  await expect(page.locator('[data-test="firstName"]')).toBeVisible();
-  await expect(page.locator('[data-test="lastName"]')).toBeVisible();
-  await expect(page.locator('[data-test="postalCode"]')).toBeVisible();
+  await expect(checkoutPage.getFirstNameField()).toBeVisible();
+  await expect(checkoutPage.getLastNameField()).toBeVisible();
+  await expect(checkoutPage.getPostalCodeField()).toBeVisible();
 });

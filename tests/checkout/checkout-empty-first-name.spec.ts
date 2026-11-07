@@ -1,29 +1,31 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
 test("TC-CHECKOUT-003 - Verify checkout with empty First Name", async ({
+  inventoryPage,
+  cartPage,
+  checkoutPage,
   page,
 }) => {
-  // Open product page
-  await page.goto("/inventory.html");
+  // Open inventory page
+  await inventoryPage.open();
 
   // Add product to cart
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+  await inventoryPage.addProductToCart("sauce-labs-backpack");
 
   // Open shopping cart
-  await page.locator('[data-test="shopping-cart-link"]').click();
+  await inventoryPage.openCart();
 
-  // Click checkout button
-  await page.locator('[data-test="checkout"]').click();
+  // Proceed to checkout
+  await cartPage.proceedToCheckout();
 
   // Fill Last Name and Postal Code only
-  await page.locator('[data-test="lastName"]').fill("Wijaya");
-  await page.locator('[data-test="postalCode"]').fill("16123");
+  await checkoutPage.fillCustomerInformation("", "Wijaya", "16123");
 
   // Continue checkout
-  await page.locator('[data-test="continue"]').click();
+  await checkoutPage.continueCheckout();
 
   // Verify error message
-  await expect(page.locator('[data-test="error"]')).toHaveText(
+  await expect(checkoutPage.getErrorMessage()).toHaveText(
     "Error: First Name is required",
   );
 

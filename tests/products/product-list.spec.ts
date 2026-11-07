@@ -1,12 +1,12 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
-test("TC-PROD-001 - Verify product list display", async ({ page }) => {
+test("TC-PROD-001 - Verify product list display", async ({ inventoryPage }) => {
   // Open product page
-  await page.goto("/inventory.html");
+  await inventoryPage.open();
 
   // Verify product list
-  await expect(page.locator('[data-test="inventory-list"]')).toBeVisible();
+  await expect(inventoryPage.getProductList()).toBeVisible();
 
   // Verify product count
-  await expect(page.locator(".inventory_item")).toHaveCount(6);
+  await expect(inventoryPage.getProductItems()).toHaveCount(6);
 });

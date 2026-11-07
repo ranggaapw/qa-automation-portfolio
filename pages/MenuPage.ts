@@ -7,6 +7,14 @@ export class MenuPage {
     await this.page.getByRole("button", { name: "Open Menu" }).click();
   }
 
+  async logout() {
+    await this.getLogoutLink().click();
+  }
+
+  async resetAppState() {
+    await this.getResetLink().click();
+  }
+
   getInventoryLink() {
     return this.page.locator('[data-test="inventory-sidebar-link"]');
   }
@@ -21,13 +29,5 @@ export class MenuPage {
 
   getResetLink() {
     return this.page.locator('[data-test="reset-sidebar-link"]');
-  }
-
-  async logout() {
-    await this.getLogoutLink().click();
-  }
-
-  async resetAppState() {
-    await this.getResetLink().click();
   }
 }

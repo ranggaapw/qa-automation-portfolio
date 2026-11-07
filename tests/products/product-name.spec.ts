@@ -1,11 +1,11 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
-test("TC-PROD-002 - Verify product name display", async ({ page }) => {
+test("TC-PROD-002 - Verify product name display", async ({ inventoryPage }) => {
   // Open product page
-  await page.goto("/inventory.html");
+  await inventoryPage.open();
 
   // Verify product name
-  await expect(page.locator(".inventory_item_name").first()).toHaveText(
+  await expect(inventoryPage.getProductNames().first()).toHaveText(
     "Sauce Labs Backpack",
   );
 });

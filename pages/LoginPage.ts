@@ -15,6 +15,10 @@ export class LoginPage {
     return this.page.locator('[data-test="password"]');
   }
 
+  getErrorMessage() {
+    return this.page.locator('[data-test="error"]');
+  }
+
   async login(username: string, password: string) {
     await this.getUsernameField().fill(username);
     await this.getPasswordField().fill(password);
@@ -23,9 +27,5 @@ export class LoginPage {
 
   async clickLogin() {
     await this.page.locator('[data-test="login-button"]').click();
-  }
-
-  getErrorMessage() {
-    return this.page.locator('[data-test="error"]');
   }
 }

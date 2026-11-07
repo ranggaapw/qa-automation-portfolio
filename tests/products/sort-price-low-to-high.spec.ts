@@ -1,20 +1,16 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
 test("TC-PROD-003 - Sort products by price from low to high", async ({
-  page,
+  inventoryPage,
 }) => {
   // Open product page
-  await page.goto("/inventory.html");
+  await inventoryPage.open();
 
   // Select price low to high
-  await page
-    .locator('[data-test="product-sort-container"]')
-    .selectOption("lohi");
+  await inventoryPage.sortProducts("lohi");
 
   // Get all product prices
-  const priceElements = await page
-    .locator(".inventory_item_price")
-    .allTextContents();
+  const priceElements = await inventoryPage.getProductPrices();
 
   // Convert price strings to numbers
   const prices = priceElements.map((price) => Number(price.replace("$", "")));

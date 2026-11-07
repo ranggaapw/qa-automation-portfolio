@@ -55,11 +55,11 @@ export class CheckoutPage {
     return this.page.locator('[data-test="total-label"]');
   }
 
-  async finishCheckout() {
-    await this.page.locator('[data-test="finish"]').click();
-  }
-
   getCompletionMessage() {
     return this.page.locator('[data-test="complete-header"]');
+  }
+
+  async finishCheckout() {
+    await this.page.locator('[data-test="finish"]').click();
   }
 }

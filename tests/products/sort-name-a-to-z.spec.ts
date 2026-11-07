@@ -1,16 +1,16 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
-test("TC-PROD-004 - Sort products by name from A to Z", async ({ page }) => {
+test("TC-PROD-004 - Sort products by name from A to Z", async ({
+  inventoryPage,
+}) => {
   // Open product page
-  await page.goto("/inventory.html");
+  await inventoryPage.open();
 
   // Select name A to Z
-  await page.locator('[data-test="product-sort-container"]').selectOption("az");
+  await inventoryPage.sortProducts("az");
 
   // Get all product names
-  const productNames = await page
-    .locator(".inventory_item_name")
-    .allTextContents();
+  const productNames = await inventoryPage.getProductNames().allTextContents();
 
   // Sort product names alphabetically
   const sortedNames = [...productNames].sort((a, b) => a.localeCompare(b));

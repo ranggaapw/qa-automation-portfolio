@@ -1,19 +1,18 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
 test.use({
   storageState: { cookies: [], origins: [] },
 });
 
-test("TC-LOGIN-001 - Login using valid credentials", async ({ page }) => {
+test("TC-LOGIN-001 - Login using valid credentials", async ({
+  loginPage,
+  page,
+}) => {
   // Open login page
-  await page.goto("/");
+  await loginPage.open();
 
-  // Enter valid credentials
-  await page.locator('[data-test="username"]').fill("standard_user");
-  await page.locator('[data-test="password"]').fill("secret_sauce");
-
-  // Click login button
-  await page.locator('[data-test="login-button"]').click();
+  // Enter valid credentials and login
+  await loginPage.login("standard_user", "secret_sauce");
 
   // Verify successful login
   await expect(page).toHaveURL(/inventory.html/);

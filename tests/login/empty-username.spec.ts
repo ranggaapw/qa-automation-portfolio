@@ -1,22 +1,23 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
 test.use({
   storageState: { cookies: [], origins: [] },
 });
 
-test("TC-LOGIN-003 - Login with empty username", async ({ page }) => {
+test("TC-LOGIN-003 - Login with empty username", async ({ loginPage }) => {
   // Open login page
-  await page.goto("/");
+  await loginPage.open();
 
   // Enter password only
-  await page.locator('[data-test="password"]').fill("secret_sauce");
+  await loginPage.getPasswordField().fill("secret_sauce");
 
   // Click login button
-  await page.locator('[data-test="login-button"]').click();
+  await loginPage.clickLogin();
 
   // Verify error message
-  await expect(page.locator('[data-test="error"]')).toBeVisible();
-  await expect(page.locator('[data-test="error"]')).toContainText(
+  await expect(loginPage.getErrorMessage()).toBeVisible();
+
+  await expect(loginPage.getErrorMessage()).toContainText(
     "Username is required",
   );
 });

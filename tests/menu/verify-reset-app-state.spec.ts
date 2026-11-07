@@ -1,23 +1,24 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
-test("TC-MENU-003 - Verify reset app state", async ({ page }) => {
-  // Open product page
-  await page.goto("/inventory.html");
+test("TC-MENU-003 - Verify reset app state", async ({
+  inventoryPage,
+  menuPage,
+}) => {
+  // Open inventory page
+  await inventoryPage.open();
 
   // Add product to cart
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+  await inventoryPage.addProductToCart("sauce-labs-backpack");
 
   // Verify cart badge is visible
-  await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText(
-    "1",
-  );
+  await expect(inventoryPage.getCartBadge()).toHaveText("1");
 
   // Open navigation menu
-  await page.getByRole("button", { name: "Open Menu" }).click();
+  await menuPage.openMenu();
 
   // Click Reset App State
-  await page.locator('[data-test="reset-sidebar-link"]').click();
+  await menuPage.resetAppState();
 
   // Verify cart badge is no longer visible
-  await expect(page.locator('[data-test="shopping-cart-badge"]')).toBeHidden();
+  await expect(inventoryPage.getCartBadge()).toBeHidden();
 });

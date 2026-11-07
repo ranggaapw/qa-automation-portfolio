@@ -1,14 +1,18 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
-test("TC-MENU-002 - Verify successful logout", async ({ page }) => {
-  // Open product page
-  await page.goto("/inventory.html");
+test("TC-MENU-002 - Verify successful logout", async ({
+  inventoryPage,
+  menuPage,
+  page,
+}) => {
+  // Open inventory page
+  await inventoryPage.open();
 
   // Open navigation menu
-  await page.getByRole("button", { name: "Open Menu" }).click();
+  await menuPage.openMenu();
 
   // Click logout
-  await page.locator('[data-test="logout-sidebar-link"]').click();
+  await menuPage.logout();
 
   // Verify user is redirected to login page
   await expect(page).toHaveURL(/saucedemo\.com\/?$/);
@@ -17,5 +21,6 @@ test("TC-MENU-002 - Verify successful logout", async ({ page }) => {
   await expect(page.locator('[data-test="login-button"]')).toBeVisible();
 
   await expect(page.locator('[data-test="username"]')).toBeVisible();
+
   await expect(page.locator('[data-test="password"]')).toBeVisible();
 });

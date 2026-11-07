@@ -1,20 +1,21 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures/page-fixtures";
 
-test("TC-MENU-001 - Verify navigation menu", async ({ page }) => {
-  // Open product page
-  await page.goto("/inventory.html");
+test("TC-MENU-001 - Verify navigation menu", async ({
+  inventoryPage,
+  menuPage,
+}) => {
+  // Open inventory page
+  await inventoryPage.open();
 
   // Open navigation menu
-  await page.getByRole("button", { name: "Open Menu" }).click();
+  await menuPage.openMenu();
 
   // Verify menu items are visible
-  await expect(
-    page.locator('[data-test="inventory-sidebar-link"]'),
-  ).toBeVisible();
+  await expect(menuPage.getInventoryLink()).toBeVisible();
 
-  await expect(page.locator('[data-test="about-sidebar-link"]')).toBeVisible();
+  await expect(menuPage.getAboutLink()).toBeVisible();
 
-  await expect(page.locator('[data-test="logout-sidebar-link"]')).toBeVisible();
+  await expect(menuPage.getLogoutLink()).toBeVisible();
 
-  await expect(page.locator('[data-test="reset-sidebar-link"]')).toBeVisible();
+  await expect(menuPage.getResetLink()).toBeVisible();
 });

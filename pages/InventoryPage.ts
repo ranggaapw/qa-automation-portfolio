@@ -18,4 +18,8 @@ export class InventoryPage {
   async removeProduct(product: string) {
     await this.page.locator(`[data-test="remove-${product}"]`).click();
   }
+
+  getCartBadge() {
+    return this.page.locator('[data-test="shopping-cart-badge"]');
+  }
 }
